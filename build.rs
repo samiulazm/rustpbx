@@ -27,19 +27,15 @@ fn main() {
         build_time.format("%Y-%m-%d")
     );
 
-    let commercial = if env::var_os("CARGO_FEATURE_COMMERCE").is_some() {
-        "commerce"
-    } else {
-        "community"
-    };
+    let edition = "full";
     let short_version = if git_dirty == "dirty" {
         format!(
-            "{}-{}-dirty-{commercial}",
+            "{}-{}-dirty-{edition}",
             env!("CARGO_PKG_VERSION"),
             git_commit
         )
     } else {
-        format!("{}-{}-{commercial}", env!("CARGO_PKG_VERSION"), git_commit)
+        format!("{}-{}-{edition}", env!("CARGO_PKG_VERSION"), git_commit)
     };
     println!("cargo:rustc-env=SHORT_VERSION={short_version}");
 

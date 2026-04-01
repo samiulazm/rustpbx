@@ -414,31 +414,6 @@ impl AppStateBuilder {
             tracing::error!("Failed to initialize addons: {}", e);
         }
 
-        // Commerce: verify licenses for all commercial addons at startup and
-        // populate the in-memory cache so the UI can show status without restart.
-        #[cfg(feature = "commerce")]
-        {
-            let commercial_ids: Vec<String> = addon_registry
-                .list_addons(app_state.clone())
-                .into_iter()
-                .filter(|a| a.category == crate::addons::AddonCategory::Commercial)
-                .map(|a| a.id.clone())
-                .collect();
-
-            if !commercial_ids.is_empty() {
-                let license_cfg = app_state.config().licenses.clone();
-                let results =
-                    crate::license::check_all_addon_licenses(&commercial_ids, &license_cfg).await;
-                if !results.is_empty() {
-                    tracing::info!(
-                        "License check at startup: {} addon(s) verified",
-                        results.len()
-                    );
-                    crate::license::record_startup_results(results);
-                }
-            }
-        }
-
         #[cfg(feature = "console")]
         {
             if let Some(ref console_state) = app_state.console {

@@ -58,7 +58,6 @@ impl AddonRegistry {
                 continue;
             }
             tracing::info!("Initializing addon: {}", addon.name());
-            // Commercial addons would check license here
             if let Err(e) = addon.initialize(state.clone()).await {
                 tracing::error!("Failed to initialize addon {}: {}", addon.name(), e);
             }
@@ -161,22 +160,16 @@ impl AddonRegistry {
                     cost: a.cost().to_string(),
                     screenshots: a.screenshots().iter().map(|s| s.to_string()).collect(),
                     restart_required: false, // Caller should set this
-                    #[cfg(feature = "commerce")]
-                    license_status: None,
-                    #[cfg(feature = "commerce")]
-                    license_expiry: None,
-                    #[cfg(feature = "commerce")]
-                    license_plan: None,
                 }
             })
             .collect()
     }
 
     pub fn is_enabled(&self, id: &str, config: &crate::config::Config) -> bool {
-        if let Some(addons) = &config.proxy.addons {
-            return addons.iter().any(|a| a == id);
+        match &config.proxy.addons {
+            None => true,
+            Some(list) => list.iter().any(|a| a == id),
         }
-        false
     }
 
     pub fn get_call_record_hooks(

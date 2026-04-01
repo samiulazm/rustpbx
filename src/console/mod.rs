@@ -135,11 +135,7 @@ impl ConsoleState {
                     serde_json::Value::String(env!("CARGO_PKG_VERSION").to_string())
                 });
                 map.entry("edition").or_insert_with(|| {
-                    if cfg!(feature = "commerce") {
-                        serde_json::Value::String("commerce".to_string())
-                    } else {
-                        serde_json::Value::String("community".to_string())
-                    }
+                    serde_json::Value::String("full".to_string())
                 });
                 map.entry("site_name")
                     .or_insert_with(|| serde_json::Value::String("RustPBX".to_string()));

@@ -51,11 +51,7 @@ pub struct UpdateInfo {
 /// Returns `UpdateInfo` on success.
 pub async fn check_update(start_time: Instant) -> anyhow::Result<UpdateInfo> {
     let version = env!("CARGO_PKG_VERSION");
-    let edition = if cfg!(feature = "commerce") {
-        "commerce"
-    } else {
-        "community"
-    };
+    let edition = "full";
     let uptime_secs = start_time.elapsed().as_secs();
     let build_time = env!("BUILD_TIME_FMT");
 

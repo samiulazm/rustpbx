@@ -268,9 +268,6 @@ pub struct Config {
     pub enterprise_auth: Option<EnterpriseAuthConfig>,
     #[serde(default)]
     pub otel: Option<OtelConfig>,
-    #[cfg(feature = "commerce")]
-    #[serde(default)]
-    pub licenses: Option<LicenseConfig>,
     #[serde(default)]
     pub rwi: Option<RwiConfig>,
     /// ACME Let's Encrypt configuration for auto-certificate renewal
@@ -338,35 +335,6 @@ impl ArchiveConfig {
             .filter(|s| !s.trim().is_empty())
             .cloned()
             .unwrap_or_else(|| format!("{}/archive", recording_path.trim_end_matches('/')))
-    }
-}
-
-/// License configuration for commerce builds.
-#[cfg(feature = "commerce")]
-#[derive(Debug, Clone, Default, Deserialize, Serialize)]
-pub struct LicenseConfig {
-    #[serde(default)]
-    pub addons: HashMap<String, String>,
-    #[serde(default)]
-    pub keys: HashMap<String, String>,
-}
-
-#[cfg(feature = "commerce")]
-impl LicenseConfig {
-    pub fn get_license_for_addon(&self, addon_id: &str) -> Option<(String, String)> {
-        self.addons.get(addon_id).and_then(|key_name| {
-            self.keys
-                .get(key_name)
-                .map(|key_value| (key_name.clone(), key_value.clone()))
-        })
-    }
-
-    pub fn get_addons_for_key(&self, key_name: &str) -> Vec<&str> {
-        self.addons
-            .iter()
-            .filter(|(_, k)| k == &key_name)
-            .map(|(id, _)| id.as_str())
-            .collect()
     }
 }
 
@@ -1047,8 +1015,6 @@ impl Default for Config {
             metrics: None,
             enterprise_auth: None,
             otel: None,
-            #[cfg(feature = "commerce")]
-            licenses: None,
             acme: None,
             transfer: None,
         }

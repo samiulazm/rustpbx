@@ -30,14 +30,6 @@ addon-telemetry = [
     "opentelemetry_sdk",
     "tracing-opentelemetry",
 ]
-commerce = [
-    "addon-wholesale",
-    "addon-endpoint-manager",
-    "addon-enterprise-auth",
-    "addon-voicemail",
-    "addon-ivr-editor",
-    "addon-telemetry",
-]
 default = [
     "opus",
     "console",
@@ -45,6 +37,12 @@ default = [
     "addon-transcript",
     "addon-archive",
     "addon-observability",
+    "addon-wholesale",
+    "addon-endpoint-manager",
+    "addon-enterprise-auth",
+    "addon-voicemail",
+    "addon-ivr-editor",
+    "addon-telemetry",
 ]
 cross = ["aws-lc-rs/bindgen"]
 perfcli-bin = []

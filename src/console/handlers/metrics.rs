@@ -151,11 +151,7 @@ fn collect_system_metrics(state: &ConsoleState) -> SystemMetrics {
         .unwrap_or(0);
 
     let version = crate::version::get_short_version().to_string();
-    let edition = if cfg!(feature = "commerce") {
-        "commerce".to_string()
-    } else {
-        "community".to_string()
-    };
+    let edition = "full".to_string();
 
     SystemMetrics {
         uptime_seconds,
