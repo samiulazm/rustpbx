@@ -30,6 +30,8 @@ addon-telemetry = [
     "opentelemetry_sdk",
     "tracing-opentelemetry",
 ]
+# Keep defaults limited to addons that ship in this repository.
+# Submodule-backed addons remain opt-in until their sources are present.
 default = [
     "opus",
     "console",
@@ -37,12 +39,6 @@ default = [
     "addon-transcript",
     "addon-archive",
     "addon-observability",
-    "addon-wholesale",
-    "addon-endpoint-manager",
-    "addon-enterprise-auth",
-    "addon-voicemail",
-    "addon-ivr-editor",
-    "addon-telemetry",
 ]
 cross = ["aws-lc-rs/bindgen"]
 perfcli-bin = []
